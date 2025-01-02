@@ -75,8 +75,10 @@ def on_message(ws, message):
             # 取消订阅
             unsubscribe['params'] = [s[:-2]+i for s in subscribe['params']]
             ws.send(json.dumps(unsubscribe))
+            print('取消订阅',unsubscribe['params'])
             # 订阅
             subscribe['params'] = [s[:-2]+current_interval for s in subscribe['params']]
+            print('订阅',subscribe['params'])
             ws.send(json.dumps(subscribe))
 
         for change_key in change.keys():
