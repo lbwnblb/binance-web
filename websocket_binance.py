@@ -13,6 +13,7 @@ def init():
         symbol =  exchangeInfo['symbol']
         if 'USDT' in symbol:
             symbol_all_usdt.append(symbol)
+    change_init()
 # {
 #   "e":"continuous_kline",	// 事件类型
 #   "E":1607443058651,		// 事件时间
@@ -92,8 +93,8 @@ def on_open(ws):
 
 if __name__ == '__main__':
     init()
-    print(symbol_all_usdt)
-    # ws = websocket.WebSocketApp("wss://fstream.binance.com/ws", on_close=on_close, on_open=on_open,
-    #                             on_message=on_message,
-    #                             on_error=on_error)
-    # ws.run_forever()
+
+    ws = websocket.WebSocketApp("wss://fstream.binance.com/ws", on_close=on_close, on_open=on_open,
+                                on_message=on_message,
+                                on_error=on_error)
+    ws.run_forever()
