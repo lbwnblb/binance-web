@@ -83,7 +83,8 @@ def on_open(ws):
     for symbol in symbol_all_usdt:
         # symbol = 'BTCUSDT'
         obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
-
+        if len(obj['params']) == 200:
+            break
 
     ws.send(json.dumps(obj))
     print("### open ###")
