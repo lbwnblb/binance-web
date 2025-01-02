@@ -7,7 +7,7 @@ import utils
 binance_fapi = 'https://fapi.binance.com'
 symbol_all_usdt = []
 def init():
-    global current_interval
+    # global current_interval
     url = binance_fapi + '/fapi/v1/exchangeInfo'
     exchangeInfos = requests.get(url).json()
     for exchangeInfo in exchangeInfos['symbols']:
@@ -16,7 +16,7 @@ def init():
             symbol_all_usdt.append(symbol)
     change_init()
     starting_price_init()
-    current_interval = utils.current_interval()
+    # current_interval = utils.current_interval()
 
 
 subscribe = {
@@ -53,7 +53,7 @@ def starting_price_init():
     for interval in utils.intervals.keys():
         starting_price[interval] = {}
 
-current_interval = None
+current_interval = '5m'
 
 def on_message(ws, message):
     global current_interval
@@ -72,10 +72,10 @@ def on_message(ws, message):
             if E - utils.intervals[current_interval] > starting_price_symbol[0]:
                 # 如果大于的话，就是新的一根K线，把这个开盘价设置为新的开盘价
                 starting_price_map[symbol] = klines(symbol, current_interval)
-        change[current_interval][symbol] = round((price-starting_price_map[symbol][1])/starting_price_map[symbol][1]*100,2)
+        change[current_interval][symbol] = {'change':round((price - starting_price_map[symbol][1]) / starting_price_map[symbol][1] * 100, 2),'price':price,'current_interval':current_interval}
 
         if E > change['next']:
-            change['next'] = E + 1000 * 3
+            change['next'] = E + 1000 * 1
             current_interval_change = change[current_interval]
             # current_interval_change = dict(sorted(current_interval_change.items(), key=lambda x: x[1], reverse=True))
             # keys = current_interval_change.keys()
@@ -87,8 +87,10 @@ def on_message(ws, message):
             result_data['data'] =  []
             keys = current_interval_change.keys()
             for key in keys:
-                result_data['data'].append({'symbol':key,'change':current_interval_change[key]})
-            current_interval = utils.current_interval()
+                result_data['data'].append({'symbol':key,'change':current_interval_change[key]['change'],'price':current_interval_change[key]['price'],'current_interval':current_interval_change[key]['current_interval']
+                                            ,'url':f'https://www.binance.com/zh-CN/futures/{key}?_from=markets'
+                                            })
+            # current_interval = utils.current_interval()
             # print(end='\n\n\n')
 
 
@@ -106,7 +108,7 @@ def on_open(ws):
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')
 
-    subscribe['params'] = subscribe['params'][-10:]
+    subscribe['params'] = subscribe['params'][-100:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")

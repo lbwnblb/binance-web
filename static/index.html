@@ -12,7 +12,7 @@
 <div id="app">
     <template>
         {{'起始时间:'+current_time}}
-         <el-select v-model="value" placeholder="请选择">
+         <el-select @change="set_current_interval" v-model="value" placeholder="请选择">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -35,6 +35,25 @@
       prop="change"
       label="涨幅">
     </el-table-column>
+    <el-table-column
+      sortable
+      prop="price"
+      label="当前价格">
+    </el-table-column>
+    <el-table-column
+      sortable
+      prop="current_interval"
+      label="涨幅类型">
+    </el-table-column>
+     <el-table-column
+      sortable
+      prop="url"
+      label="跳转到交易所">
+      <!-- 使用 scoped slot 来绑定按钮的点击事件 -->
+      <template slot-scope="scope">
+        <el-button @click="goToUrl(scope.row.url)" type="primary">跳转</el-button>
+      </template>
+    </el-table-column>
 
 
   </el-table>
@@ -43,31 +62,18 @@
 
  <script>
     new Vue({
+
       el: '#app',
       data() {
         return {
+
           current_time: '',
           tableData: [{
               symbol: '王小虎',
               change: '上海市普陀区金沙江路 1518 弄'
         }],
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: ''
+        options: [],
+        value: '5m'
         };
       },
       created() {
@@ -75,10 +81,24 @@
             setInterval(() => {
               this.get_data()
             }, 1000);
+            this.get_options()
         },
         methods: {
+          goToUrl(url) {
+            window.open(url, '_blank')
+        },
+        set_current_interval(){
+            axios.get(window.location.origin+'/set_current_interval?interval='+this.value)
+
+        },
+        get_options(){
+            axios.get(window.location.origin+'/get_options')
+          .then(response => {
+              this.options = response.data;
+          });
+        },
         get_data(){
-            axios.get('https://lbwnb.icu/get_data')
+            axios.get(window.location.origin+'/get_data')
           .then(response => {
               this.tableData = response.data.data;
               this.current_time = response.data.time;
