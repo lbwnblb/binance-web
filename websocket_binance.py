@@ -84,7 +84,7 @@ def on_open(ws):
         # symbol = 'BTCUSDT'
         obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    obj['params'] = obj['params'][-10:]
+    obj['params'] = obj['params'][-200:]
 
     ws.send(json.dumps(obj))
     print("### open ###")
