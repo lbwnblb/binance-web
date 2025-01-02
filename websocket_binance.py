@@ -58,7 +58,7 @@ def on_message(ws, message):
     change[i][symbol] = round((k['c']-k['o'])/k['o']*100,2)
 
     if message['E'] > change['next']:
-        change['next'] = message['E'] + 1000*10
+        change['next'] = message['E'] + 1000*3
         for change_key in change.keys():
             if change_key in current_interval:
                 interval_map = change[change_key]
@@ -84,7 +84,7 @@ def on_open(ws):
         # symbol = 'BTCUSDT'
         obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    obj['params'] = obj[-100:]
+    # obj['params'] = obj['params'][-200:]
 
     ws.send(json.dumps(obj))
     print("### open ###")
