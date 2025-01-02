@@ -73,11 +73,11 @@ def on_message(ws, message):
         current_interval = utils.current_interval()
         if i not in current_interval:
             # 取消订阅
-            unsubscribe['params'] = [s[:-2]+i for s in subscribe['params']]
+            unsubscribe['params'] = [str(s[:-2]+i).rstrip('\n') for s in subscribe['params']]
             ws.send(json.dumps(unsubscribe))
             print('取消订阅',unsubscribe['params'])
             # 订阅
-            subscribe['params'] = [s[:-2]+current_interval for s in subscribe['params']]
+            subscribe['params'] = [str(s[:-2]+current_interval).rstrip('\n') for s in subscribe['params']]
             print('订阅',subscribe['params'])
             ws.send(json.dumps(subscribe))
 
