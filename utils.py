@@ -14,6 +14,9 @@ def convert_to_float(d):
         elif isinstance(value, dict):
             convert_to_float(value)
 
+def current_interval():
+    return open('current_interval.txt').read()
+
 
 def get_current_timestamp_ms():
     return int(time.time() * 1000)

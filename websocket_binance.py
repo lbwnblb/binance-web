@@ -14,6 +14,18 @@ def init():
         if 'USDT' in symbol:
             symbol_all_usdt.append(symbol)
     change_init()
+
+subscribe = {
+        "method": "SUBSCRIBE"
+        ,"params":[]
+        , "id": 1
+    }
+unsubscribe = {
+        "method": "UNSUBSCRIBE",
+        "params":[],
+        "id": 312
+    }
+
 # {
 #   "e":"continuous_kline",	// 事件类型
 #   "E":1607443058651,		// 事件时间
@@ -41,7 +53,6 @@ def init():
 
 change = {'next': utils.get_current_timestamp_ms()}
 
-current_interval = '5m'
 
 def change_init():
     for interval in utils.intervals:
@@ -59,6 +70,15 @@ def on_message(ws, message):
 
     if message['E'] > change['next']:
         change['next'] = message['E'] + 1000*3
+        current_interval = utils.current_interval()
+        if i not in current_interval:
+            # 取消订阅
+            unsubscribe['params'] = [s[:-2]+i for s in subscribe['params']]
+            ws.send(json.dumps(unsubscribe))
+            # 订阅
+            subscribe['params'] = [s[:-2]+current_interval for s in subscribe['params']]
+            ws.send(json.dumps(subscribe))
+
         for change_key in change.keys():
             if change_key in current_interval:
                 interval_map = change[change_key]
@@ -74,19 +94,15 @@ def on_close(ws,close_status_code, close_msg):
     pass
 
 def on_open(ws):
-    obj = {
-        "method": "SUBSCRIBE"
-        ,"params":[]
-        , "id": 1
-    }
+
 
     for symbol in symbol_all_usdt:
         # symbol = 'BTCUSDT'
-        obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
+        subscribe['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    obj['params'] = obj['params'][-190:]
+    subscribe['params'] = subscribe['params'][-100:]
 
-    ws.send(json.dumps(obj))
+    ws.send(json.dumps(subscribe))
     print("### open ###")
 
 
