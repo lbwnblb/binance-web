@@ -75,10 +75,10 @@ def on_message(ws, message):
             # 取消订阅
             unsubscribe['params'] = [str(s[:-2]+i).rstrip('\n') for s in subscribe['params']]
             ws.send(json.dumps(unsubscribe))
-            print('取消订阅',unsubscribe['params'])
+            # print('取消订阅',unsubscribe['params'])
             # 订阅
             subscribe['params'] = [str(s[:-2]+current_interval).rstrip('\n') for s in subscribe['params']]
-            print('订阅',subscribe['params'])
+            # print('订阅',subscribe['params'])
             ws.send(json.dumps(subscribe))
 
         for change_key in change.keys():
@@ -103,7 +103,7 @@ def on_open(ws):
         # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    subscribe['params'] = subscribe['params'][-10:]
+    subscribe['params'] = subscribe['params'][-100:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")
