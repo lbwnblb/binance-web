@@ -12,7 +12,7 @@ def init():
     exchangeInfos = requests.get(url).json()
     for exchangeInfo in exchangeInfos['symbols']:
         symbol =  exchangeInfo['symbol']
-        if 'USDT' in symbol:
+        if 'USDT' in symbol and '_' not in symbol:
             symbol_all_usdt.append(symbol)
     change_init()
     starting_price_init()
@@ -100,7 +100,7 @@ def on_open(ws):
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')
 
-    subscribe['params'] = subscribe['params'][-10:]
+    subscribe['params'] = subscribe['params'][-198:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")
