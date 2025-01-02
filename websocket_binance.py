@@ -100,7 +100,7 @@ def on_open(ws):
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')
 
-    subscribe['params'] = subscribe['params'][-190:]
+    subscribe['params'] = subscribe['params'][-10:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")
