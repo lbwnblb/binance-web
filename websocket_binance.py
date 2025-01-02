@@ -92,6 +92,7 @@ def on_open(ws):
 
 if __name__ == '__main__':
     init()
+    print(symbol_all_usdt)
     # ws = websocket.WebSocketApp("wss://fstream.binance.com/ws", on_close=on_close, on_open=on_open,
     #                             on_message=on_message,
     #                             on_error=on_error)
