@@ -5,8 +5,38 @@ import time
 system = platform.system()
 import datetime
 
-intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M']
+intervals = {
+    '1m': 60000,
+    '3m': 180000,
+    '5m': 300000,
+    '15m': 900000,
+    '30m': 1800000,
+    '1h': 3600000,
+    '2h': 7200000,
+    '4h': 14400000,
+    '6h': 21600000,
+    '8h': 28800000,
+    '12h': 43200000,
+    '1d': 86400000,
+    '3d': 259200000,
+    '1w': 604800000,
+    '1M': 2592000000
+}
 
+
+def arr_to_float(arr):
+    result = []
+    for x in arr:
+        if isinstance(x, str):  # Only apply replace() to strings
+            if x.replace('.', '', 1).isdigit():
+                result.append(float(x))
+            else:
+                result.append(x)
+        elif isinstance(x, (int, float)):  # Directly append numbers
+            result.append(float(x))
+        else:
+            result.append(x)  # For other types, just append as is
+    return result
 def convert_to_float(d):
     for key, value in d.items():
         if isinstance(value, str) and value.replace('.', '', 1).replace('-', '', 1).isdigit():
