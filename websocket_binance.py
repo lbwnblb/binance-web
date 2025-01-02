@@ -55,16 +55,14 @@ def on_message(ws, message):
     k = message['k']
     symbol = message['ps']
     i = k['i']
-    # print(f"{symbol} {k['i']}  开始时间:{utils.convert_timestamp_to_date(k['t'])}      涨幅:{round((k['c']-k['o'])/k['o']*100,2)}%")
     change[i][symbol] = round((k['c']-k['o'])/k['o']*100,2)
 
-
     if message['E'] > change['next']:
-        change['next'] = message['E'] + 1000*5
+        change['next'] = message['E'] + 1000*10
         for change_key in change.keys():
             if change_key in current_interval:
                 interval_map = change[change_key]
-                sorted_interval_map = sorted(interval_map.items(), key=lambda x: x[1], reverse=True)
+                sorted_interval_map = dict(sorted(interval_map.items(), key=lambda x: x[1], reverse=True))
                 print(f"开始时间:{utils.convert_timestamp_to_date(k['t'])}")
                 for interval_map_key in sorted_interval_map.keys():
                     print(f"{interval_map_key} {change_key} 涨幅:{sorted_interval_map[interval_map_key]}%")
@@ -83,7 +81,8 @@ def on_open(ws):
     }
 
     for symbol in symbol_all_usdt:
-        obj['params'].append(f'{symbol.lower()}@continuousKline_5m')
+        # symbol = 'BTCUSDT'
+        obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
 
     ws.send(json.dumps(obj))
