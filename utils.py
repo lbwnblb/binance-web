@@ -45,7 +45,7 @@ def convert_to_float(d):
             convert_to_float(value)
 
 def current_interval():
-    return open('current_interval.txt').read()
+    return open('current_interval.txt').read().rsplit('\n')
 
 
 def get_current_timestamp_ms():
