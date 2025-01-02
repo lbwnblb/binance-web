@@ -100,7 +100,7 @@ def on_open(ws):
         # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    subscribe['params'] = subscribe['params'][-100:]
+    subscribe['params'] = subscribe['params'][-10:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")
