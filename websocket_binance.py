@@ -109,9 +109,9 @@ def on_open(ws):
     for symbol in symbol_all_usdt:
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')
-    front = subscribe['params'][:199]
-    after = subscribe['params'][199:]
-    subscribe['params'] = front
+    # front = subscribe['params'][:199]
+    after = subscribe['params'][-199:]
+    subscribe['params'] = after
 
     ws.send(json.dumps(subscribe))
     subscribe['params'] = after
