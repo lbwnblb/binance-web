@@ -66,7 +66,7 @@ def on_message(ws, message):
                 print(f"开始时间:{utils.convert_timestamp_to_date(k['t'])}")
                 for interval_map_key in sorted_interval_map.keys():
                     print(f"{interval_map_key} {change_key} 涨幅:{sorted_interval_map[interval_map_key]}%")
-
+                print(end='\n\n\n')
 
 def on_error(ws, error):
     pass
@@ -84,7 +84,7 @@ def on_open(ws):
         # symbol = 'BTCUSDT'
         obj['params'].append(f'{symbol.lower()}_perpetual@continuousKline_5m')
 
-    obj['params'] = obj['params'][-100:]
+    obj['params'] = obj['params'][-201:]
 
     ws.send(json.dumps(obj))
     print("### open ###")
