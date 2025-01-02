@@ -41,7 +41,7 @@ subscribe = {
 change = {'next': utils.get_current_timestamp_ms()}
 starting_price = {}
 
-
+result_data = {}
 
 
 def change_init():
@@ -77,13 +77,19 @@ def on_message(ws, message):
         if E > change['next']:
             change['next'] = E + 1000 * 3
             current_interval_change = change[current_interval]
-            current_interval_change = dict(sorted(current_interval_change.items(), key=lambda x: x[1], reverse=True))
+            # current_interval_change = dict(sorted(current_interval_change.items(), key=lambda x: x[1], reverse=True))
+            # keys = current_interval_change.keys()
+            # print('开始时间:',utils.convert_timestamp_to_date(starting_price_map[symbol][0]))
+
+            # for key in keys:
+            #     print(key,current_interval,'涨幅:',current_interval_change[key])
+            result_data['time'] =  utils.convert_timestamp_to_date(starting_price_map[symbol][0])
+            result_data['data'] =  []
             keys = current_interval_change.keys()
-            print('开始时间:',utils.convert_timestamp_to_date(starting_price_map[symbol][0]))
             for key in keys:
-                print(key,current_interval,'涨幅:',current_interval_change[key])
+                result_data['data'].append({'symbol':key,'change':current_interval_change[key]})
             current_interval = utils.current_interval()
-            print(end='\n\n\n')
+            # print(end='\n\n\n')
 
 
 
@@ -100,7 +106,7 @@ def on_open(ws):
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')
 
-    subscribe['params'] = subscribe['params'][-198:]
+    subscribe['params'] = subscribe['params'][-10:]
 
     ws.send(json.dumps(subscribe))
     print("### open ###")
@@ -111,12 +117,14 @@ def klines(symbol,interval):
     return utils.arr_to_float(requests.get(binance_fapi + '/fapi/v1/klines', params={'symbol':symbol,'interval':interval,'limit':1}).json()[0])
 
 
-
-if __name__ == '__main__':
-
+def run():
     init()
 
     ws = websocket.WebSocketApp("wss://fstream.binance.com/ws", on_close=on_close, on_open=on_open,
                                 on_message=on_message,
                                 on_error=on_error)
     ws.run_forever()
+
+
+
+
