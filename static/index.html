@@ -78,7 +78,7 @@
         },
         methods: {
         get_data(){
-            axios.get('http://127.0.0.1:5000/get_data')
+            axios.get('https://lbwnb.icu/get_data')
           .then(response => {
               this.tableData = response.data.data;
               this.current_time = response.data.time;
