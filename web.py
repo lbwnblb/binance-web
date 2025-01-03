@@ -37,10 +37,10 @@ def run():
 
 if __name__ == "__main__":
     main_thread = threading.Thread(target=run,args=())
-    websocket_binance_run = threading.Thread(target=websocket_binance.run,args=())
+    # websocket_binance_run = threading.Thread(target=,args=())
     main_thread.daemon = True
-    websocket_binance_run.daemon = True
+    # websocket_binance_run.daemon = True
     main_thread.start()
-    websocket_binance_run.start()
-    main_thread.join()
-    websocket_binance_run.join()
+    # websocket_binance_run.start()
+    websocket_binance.run()
+    # websocket_binance_run.join()

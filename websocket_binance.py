@@ -70,7 +70,7 @@ def on_message(ws, message):
             starting_price_map[symbol] = klines(symbol, current_interval)
         else:
             starting_price_symbol = starting_price_map[symbol]
-            if E - utils.intervals[current_interval] > starting_price_symbol[0]:
+            if E - utils.intervals[current_interval] >= starting_price_symbol[0]:
                 # 如果大于的话，就是新的一根K线，把这个开盘价设置为新的开盘价
                 starting_price_map[symbol] = klines(symbol, current_interval)
         change[current_interval][symbol] = {'change':round((price - starting_price_map[symbol][1]) / starting_price_map[symbol][1] * 100, 2),'price':price,'current_interval':current_interval}
