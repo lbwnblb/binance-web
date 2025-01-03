@@ -87,10 +87,13 @@ def on_message(ws, message):
             result_data['time'] =  utils.convert_timestamp_to_date(starting_price_map[symbol][0])
             result_data['data'] =  []
             keys = current_interval_change.keys()
+            # 平均涨幅
+            avg_change = round(sum([current_interval_change[key]['change'] for key in keys]) / len(keys),2)
             for key in keys:
                 result_data['data'].append({'symbol':key,'change':current_interval_change[key]['change'],'price':current_interval_change[key]['price'],'current_interval':current_interval_change[key]['current_interval']
                                             ,'url':f'https://www.binance.com/zh-CN/futures/{key}?_from=markets'
                                             })
+            result_data['avg_change'] = avg_change
             # current_interval = utils.current_interval()
             # print(end='\n\n\n')
 
@@ -104,8 +107,6 @@ def on_close(ws,close_status_code, close_msg):
     retry()
 
 def on_open(ws):
-
-
     for symbol in symbol_all_usdt:
     # symbol = 'BTCUSDT'
         subscribe['params'].append(f'{symbol.lower()}@aggTrade')

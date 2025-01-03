@@ -11,15 +11,19 @@
 <body>
 <div id="app">
     <template>
+
         {{'起始时间:'+current_time}}
          <el-select @change="set_current_interval" v-model="value" placeholder="请选择">
+
     <el-option
       v-for="item in options"
       :key="item.value"
       :label="item.label"
       :value="item.value">
     </el-option>
+
   </el-select>
+        {{'平均涨幅:'+avg_change}}
   <el-table
     :data="tableData"
     :default-sort = "{prop: 'change', order: 'descending'}"
@@ -66,11 +70,11 @@
       el: '#app',
       data() {
         return {
-
+          avg_change: 0,
           current_time: '',
           tableData: [{
-              symbol: '王小虎',
-              change: '上海市普陀区金沙江路 1518 弄'
+              symbol: '无',
+              change: '0'
         }],
         options: [],
         value: '5m'
@@ -102,7 +106,7 @@
           .then(response => {
               this.tableData = response.data.data;
               this.current_time = response.data.time;
-
+              this.avg_change = response.data.avg_change;
           });
                         // 定义定时器间隔（单位：毫秒），例如每 5 秒获取一次数据
 
