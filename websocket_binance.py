@@ -130,6 +130,7 @@ def klines(symbol,interval):
 
 def retry():
     print('重试')
+    binance_utils.hr24_init()
     time.sleep(1)
     ws = websocket.WebSocketApp("wss://fstream.binance.com/ws", on_close=on_close, on_open=on_open,
                                 on_message=on_message,
