@@ -4,7 +4,7 @@ import time
 
 system = platform.system()
 import datetime
-
+binance_fapi = 'https://fapi.binance.com'
 intervals = {
     '1m': 60000,
     '3m': 180000,
@@ -68,6 +68,8 @@ if system == "Windows":
     proxy = "http://127.0.0.1:10808"  # 替换为实际的代理地址和端口
     os.environ['HTTP_PROXY'] = proxy
     os.environ['HTTPS_PROXY'] = proxy
+
+
 if __name__ == '__main__':
     v = {'e': 'continuous_kline', 'E': '2025-01-02 13:00:16', 'ps': 'AMBUSDT', 'ct': 'PERPETUAL',
      'k': {'t': '2025-01-02 13:00:00', 'T': '2025-01-02 13:04:59', 'i': '5m', 'f': 6306341673087, 'L': 6306344126600,

@@ -4,12 +4,15 @@ import time
 import requests
 import websocket
 
+import binance_utils
 import utils
-binance_fapi = 'https://fapi.binance.com'
+from binance_utils import hr24_init
+
 symbol_all_usdt = []
 def init():
+    hr24_init()
     # global current_interval
-    url = binance_fapi + '/fapi/v1/exchangeInfo'
+    url = utils.binance_fapi + '/fapi/v1/exchangeInfo'
     exchangeInfos = requests.get(url).json()
     for exchangeInfo in exchangeInfos['symbols']:
         symbol =  exchangeInfo['symbol']
@@ -109,20 +112,21 @@ def on_close(ws,close_status_code, close_msg):
 def on_open(ws):
     for symbol in symbol_all_usdt:
     # symbol = 'BTCUSDT'
-        subscribe['params'].append(f'{symbol.lower()}@aggTrade')
+        if symbol in binance_utils.hr24_map:
+            if binance_utils.hr24_map[symbol]['quoteVolume']>2000:
+                subscribe['params'].append(f'{symbol.lower()}@aggTrade')
     # front = subscribe['params'][:199]
-    after = subscribe['params'][-199:]
-    subscribe['params'] = after
+    # after = subscribe['params'][-199:]
+    # subscribe['params'] = after
 
-    ws.send(json.dumps(subscribe))
-    subscribe['params'] = after
+
     ws.send(json.dumps(subscribe))
     print("### open ###")
 
 
 
 def klines(symbol,interval):
-    return utils.arr_to_float(requests.get(binance_fapi + '/fapi/v1/klines', params={'symbol':symbol,'interval':interval,'limit':1}).json()[0])
+    return utils.arr_to_float(requests.get(utils.binance_fapi + '/fapi/v1/klines', params={'symbol':symbol, 'interval':interval, 'limit':1}).json()[0])
 
 def retry():
     print('重试')
@@ -140,6 +144,7 @@ def run():
                                 on_error=on_error)
     ws.run_forever()
 
-
+if __name__ == '__main__':
+    run()
 
 
