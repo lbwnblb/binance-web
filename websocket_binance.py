@@ -164,7 +164,7 @@ if __name__ == '__main__':
             if binance_utils.hr24_map[symbol]['quoteVolume'] > 20000:
                 symbol_filter.append(symbol)
     klines_map = {}
-    limit = 100
+    limit = 200
     for symbol in symbol_filter:
         klines_map[symbol] = klines(symbol,'15m',limit=limit)
     print('limit:',limit)
@@ -182,16 +182,17 @@ if __name__ == '__main__':
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
             k = 0
             if last['side'] in 'BUY':
-                flag = False #(utils.price_change(item['open'],item['low']) < -1)
-                print('收益:','-1' if flag else item['change'])
-                total_income += (-1 if flag else item['change'])
-                total_income-=0.1
-            # else:
-            #     # if item['open']+k < item['high']:
-            #     flag = False #(utils.price_change(item['open'], item['high']) > 1)
-            #     print('收益:','-1' if flag else -item['change'])
-            #     total_income -= (1 if flag else item['change'])
-            #     total_income -= 0.1
+                # flag = False #(utils.price_change(item['open'],item['low']) < -1)
+                # print('收益:','-1' if flag else item['change'])
+                # total_income += (-1 if flag else item['change'])
+                # total_income-=0.1
+                pass
+            else:
+                # if item['open']+k < item['high']:
+                flag = False #(utils.price_change(item['open'], item['high']) > 1)
+                print('收益:','-1' if flag else -item['change'])
+                total_income -= (1 if flag else item['change'])
+                total_income -= 0.1
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
