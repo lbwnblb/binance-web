@@ -164,7 +164,7 @@ if __name__ == '__main__':
             if binance_utils.hr24_map[symbol]['quoteVolume'] > 2000:
                 symbol_filter.append(symbol)
     klines_map = {}
-    limit = 24*4*7
+    limit = 200
     for symbol in symbol_filter:
         klines_map[symbol] = klines(symbol,'15m',limit=limit)
     print('limit:',limit)
@@ -194,7 +194,7 @@ if __name__ == '__main__':
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
-        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[int(length / 2)]['symbol']
+        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=(True if sum_change > 0 else False))[0]['symbol']
         last = {'symbol': symbol, 'side': 'BUY' if sum_change > 0 else 'SELL'}
 
 
