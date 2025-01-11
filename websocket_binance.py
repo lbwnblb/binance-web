@@ -166,7 +166,7 @@ if __name__ == '__main__':
     klines_map = {}
     limit = 1500
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'30m',limit=limit)
+        klines_map[symbol] = klines(symbol,'1h',limit=limit)
     print('limit:',limit)
     avg_map = {}
     for key in klines_map.keys():
