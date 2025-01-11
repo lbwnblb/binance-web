@@ -161,12 +161,12 @@ if __name__ == '__main__':
     symbol_filter = []
     for symbol in symbol_all_usdt:
         if symbol in binance_utils.hr24_map:
-            if binance_utils.hr24_map[symbol]['quoteVolume'] > 30000:
+            if binance_utils.hr24_map[symbol]['quoteVolume'] > 20000:
                 symbol_filter.append(symbol)
     klines_map = {}
     limit = 1500
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'5m',limit=limit)
+        klines_map[symbol] = klines(symbol,'15m',limit=limit)
     print('limit:',limit)
     avg_map = {}
     for key in klines_map.keys():
