@@ -181,11 +181,11 @@ if __name__ == '__main__':
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
-        # print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[int(length / 2)]['symbol'])
-        if sum_change > 0:
-            print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[0]['symbol'])
-        else:
-            print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
+        print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[int(length / 2)]['symbol'])
+        # if sum_change > 0:
+        #     print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[0]['symbol'])
+        # else:
+        #     print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
     # exit()
 
 
