@@ -172,7 +172,7 @@ if __name__ == '__main__':
         klines_data = klines_map.get(key)
         for data in klines_data:
             if data[0] not in avg_map:
-                avg_map[data[0]] = [data[0]]
+                avg_map[data[0]] = []
             avg_map[data[0]].append(utils.price_change(data[1], data[4]))
     for key in avg_map.keys():
         print(key,avg_map[key])
