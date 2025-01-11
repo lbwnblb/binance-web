@@ -178,8 +178,8 @@ if __name__ == '__main__':
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
         # print(key,avg_map[key])
-        print(utils.convert_timestamp_to_date(key),sum_change)
-        print(key, sum_change,end='')
+        print(utils.convert_timestamp_to_date(key),sum_change,end='')
+        # print(key, sum_change,end='')
         if sum_change > 0:
             print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
         else:
