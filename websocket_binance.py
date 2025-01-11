@@ -185,11 +185,13 @@ if __name__ == '__main__':
 
                 print('收益:','-1' if flag else item['change'])
                 total_income += (-1 if flag else item['change'])
+                total_income-=-0.001
             else:
                 if item['open'] < item['high']:
                     flag = False #(utils.price_change(item['open'], item['high']) > 1)
                     print('收益:','-1' if flag else -item['change'])
                     total_income -= (1 if flag else item['change'])
+                    total_income -= -0.001
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
