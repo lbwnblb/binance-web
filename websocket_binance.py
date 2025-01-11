@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 symbol_filter.append(symbol)
     klines_map = {}
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'1h',10)
+        klines_map[symbol] = klines(symbol,'1h',25)[:-1]
 
     avg_map = {}
     for key in klines_map.keys():
@@ -175,13 +175,16 @@ if __name__ == '__main__':
                 avg_map[data[0]] = []
             avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key})
     last = None
+    total_income = 0
     for key in avg_map.keys():
         if last:
             change = [item['change'] for item in avg_map[key] if item['symbol'] == last['symbol']][0]
             if last['side'] in 'BUY':
                 print('收益:',change)
+                total_income += change
             else:
                 print('收益:',-change)
+                total_income -= change
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
@@ -200,6 +203,6 @@ if __name__ == '__main__':
         #     print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
     # exit()
 
-
+    print('盈亏',total_income)
     # print(data_s)
 
