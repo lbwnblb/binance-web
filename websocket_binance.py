@@ -182,16 +182,16 @@ if __name__ == '__main__':
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
             k = 0
             if last['side'] in 'BUY':
-                flag = (utils.price_change(item['open'],item['low']) < -2)
+                flag = (utils.price_change(item['open'],item['low']) < -5)
                 print('收益:','-1' if flag else item['change'])
-                total_income += (-2 if flag else item['change'])
+                total_income += (-5 if flag else item['change'])
                 total_income-=0.1
                 # pass
             else:
                 # if item['open']+k < item['high']:
-                flag = (utils.price_change(item['open'], item['high']) > 2)
+                flag = (utils.price_change(item['open'], item['high']) > 5)
                 print('收益:','-1' if flag else -item['change'])
-                total_income -= (2 if flag else item['change'])
+                total_income -= (5 if flag else item['change'])
                 total_income -= 0.1
 
         sum_number = sum([item['change'] for item in avg_map[key]])
