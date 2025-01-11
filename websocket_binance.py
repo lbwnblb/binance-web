@@ -174,14 +174,26 @@ if __name__ == '__main__':
             if data[0] not in avg_map:
                 avg_map[data[0]] = []
             avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key})
+    last = None
     for key in avg_map.keys():
+        if last:
+            change = [item['change'] for item in avg_map[key] if item['symbol'] == last['symbol']][0]
+            if last['side'] in 'BUY':
+                print('收益:',change)
+            else:
+                print('收益:',-change)
+
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
         length = len(avg_map[key])
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
-        print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[int(length / 2)]['symbol'])
+        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[int(length / 2)]['symbol']
+        last = {'symbol': symbol, 'side': 'BUY' if sum_change > 0 else 'SELL'}
+
+
+        print('选择:', last)
         # if sum_change > 0:
         #     print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[0]['symbol'])
         # else:
