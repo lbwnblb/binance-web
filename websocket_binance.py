@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 symbol_filter.append(symbol)
     klines_map = {}
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'15m',4*24*3)
+        klines_map[symbol] = klines(symbol,'15m',limit=1500)
 
     avg_map = {}
     for key in klines_map.keys():
@@ -173,7 +173,7 @@ if __name__ == '__main__':
         for data in klines_data:
             if data[0] not in avg_map:
                 avg_map[data[0]] = []
-            avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key})
+            avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2]})
     last = None
     total_income = 0
     for key in avg_map.keys():
