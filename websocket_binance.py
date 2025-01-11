@@ -194,7 +194,7 @@ if __name__ == '__main__':
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
-        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=(True if sum_change > 0 else False))[int(length/4)]['symbol']
+        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=(True if sum_change > 0 else False))[int(length/8)]['symbol']
         last = {'symbol': symbol, 'side': 'BUY' if sum_change > 0 else 'SELL'}
 
 
