@@ -164,9 +164,10 @@ if __name__ == '__main__':
             if binance_utils.hr24_map[symbol]['quoteVolume'] > 2000:
                 symbol_filter.append(symbol)
     klines_map = {}
+    limit = 24*4*7
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'15m',limit=24*4*3)
-
+        klines_map[symbol] = klines(symbol,'15m',limit=limit)
+    print('limit:',limit)
     avg_map = {}
     for key in klines_map.keys():
         klines_data = klines_map.get(key)
