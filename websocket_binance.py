@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 symbol_filter.append(symbol)
     klines_map = {}
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'15m',limit=1500)
+        klines_map[symbol] = klines(symbol,'15m',limit=4*24)
 
     avg_map = {}
     for key in klines_map.keys():
@@ -173,18 +173,19 @@ if __name__ == '__main__':
         for data in klines_data:
             if data[0] not in avg_map:
                 avg_map[data[0]] = []
-            avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2]})
+            avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2],'close':data[4],'open':data[1]})
     last = None
     total_income = 0
     for key in avg_map.keys():
         if last:
-            change = [item['change'] for item in avg_map[key] if item['symbol'] == last['symbol']][0]
-            if last['side'] in 'BUY':
-                print('收益:',change)
+            item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
+            if last['side'] in 'BUY' and item['open']> item['low']:
+                print('收益:',item['change'])
                 total_income += change
             else:
-                print('收益:',-change)
-                total_income -= change
+                if item['open'] < item['high']:
+                    print('收益:',-item['change'])
+                    total_income -= item['change']
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
