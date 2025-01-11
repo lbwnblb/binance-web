@@ -161,7 +161,7 @@ if __name__ == '__main__':
     symbol_filter = []
     for symbol in symbol_all_usdt:
         if symbol in binance_utils.hr24_map:
-            if binance_utils.hr24_map[symbol]['quoteVolume'] > 5000:
+            if binance_utils.hr24_map[symbol]['quoteVolume'] > 10000:
                 symbol_filter.append(symbol)
     klines_map = {}
     limit = 24*4*10
