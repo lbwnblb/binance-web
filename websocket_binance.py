@@ -173,10 +173,17 @@ if __name__ == '__main__':
         for data in klines_data:
             if data[0] not in avg_map:
                 avg_map[data[0]] = []
-            avg_map[data[0]].append(utils.price_change(data[1], data[4]))
+            avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key})
     for key in avg_map.keys():
-        print(key,avg_map[key])
-        print(utils.convert_timestamp_to_date(key),round(sum(avg_map[key])/len(avg_map[key]),2))
+        sum_number = sum([item['change'] for item in avg_map[key]])
+        sum_change = round(sum_number / len(avg_map[key]), 2)
+        # print(key,avg_map[key])
+        print(utils.convert_timestamp_to_date(key),sum_change)
+        print(key, sum_change,end='')
+        if sum_change > 0:
+            print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
+        else:
+            print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[0]['symbol'])
     # exit()
 
 
