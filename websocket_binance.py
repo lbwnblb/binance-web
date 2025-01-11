@@ -176,15 +176,14 @@ if __name__ == '__main__':
             avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key})
     for key in avg_map.keys():
         sum_number = sum([item['change'] for item in avg_map[key]])
-        length = len(avg_map[key])
         sum_change = round(sum_number / len(avg_map[key]), 2)
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
         if sum_change > 0:
-            print('选择:',avg_map[key][int(length/2)]['symbol'])
+            print('选择:',sorted(avg_map[key], key=lambda x: x['change'], reverse=False)[0]['symbol'])
         else:
-            print('选择:', avg_map[key][int(length/2)]['symbol'])
+            print('选择:', sorted(avg_map[key], key=lambda x: x['change'], reverse=True)[0]['symbol'])
     # exit()
 
 
