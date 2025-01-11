@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 symbol_filter.append(symbol)
     klines_map = {}
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'15m',limit=100)
+        klines_map[symbol] = klines(symbol,'15m',limit=24*4*3)
 
     avg_map = {}
     for key in klines_map.keys():
