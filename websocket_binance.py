@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 symbol_filter.append(symbol)
     klines_map = {}
     for symbol in symbol_filter:
-        klines_map[symbol] = klines(symbol,'15m',limit=4*24)
+        klines_map[symbol] = klines(symbol,'15m',limit=100)
 
     avg_map = {}
     for key in klines_map.keys():
@@ -179,9 +179,9 @@ if __name__ == '__main__':
     for key in avg_map.keys():
         if last:
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
-            if last['side'] in 'BUY' and item['open']> item['low']:
+            if last['side'] in 'BUY' and item['open'] > item['low']:
                 print('收益:',item['change'])
-                total_income += change
+                total_income += item['change']
             else:
                 if item['open'] < item['high']:
                     print('收益:',-item['change'])
