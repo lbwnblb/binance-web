@@ -180,7 +180,7 @@ if __name__ == '__main__':
     for key in avg_map.keys():
         if last:
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
-            k = item['open']*0.001
+            k = 0
             if last['side'] in 'BUY' and item['open']-k > item['low']:
                 flag = False #(utils.price_change(item['open'],item['low']) < -1)
 
