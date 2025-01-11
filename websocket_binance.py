@@ -117,7 +117,7 @@ def on_open(ws):
                 subscribe['params'].append(f'{symbol.lower()}@aggTrade')
     # front = subscribe['params'][:199]
     # after = subscribe['params'][-199:]
-    # subscribe['params'] = after
+    # subscribe['params'] = subscribe['params'][:10]
 
 
     ws.send(json.dumps(subscribe))

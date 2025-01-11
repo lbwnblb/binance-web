@@ -52,15 +52,23 @@
      <el-table-column
       sortable
       prop="url"
-      label="跳转到交易所">
+      label="查看咨询">
       <!-- 使用 scoped slot 来绑定按钮的点击事件 -->
       <template slot-scope="scope">
-        <el-button @click="goToUrl(scope.row.url)" type="primary">跳转</el-button>
+        <el-button @click="go_info(scope.row)" type="primary">查看咨询</el-button>
       </template>
     </el-table-column>
 
 
   </el-table>
+ <el-dialog :title="title" :visible.sync="dialogTableVisible" width="100%" >
+  <el-table :data="gridData">
+    <el-table-column property="created_at" label="日期" width="170"></el-table-column>
+    <el-table-column property="full_text" label="内容" width="600"></el-table-column>
+    <el-table-column property="type" label="类型" width="50"></el-table-column>
+  </el-table>
+     <el-button @click="get_info_data('new')">new</el-button><el-button @click="get_info_data('_hot')">#_hot</el-button><el-button @click="get_info_data('_new')">#_new</el-button><el-button @click="get_info_data('hot')">hot</el-button>
+</el-dialog>
 </template>
   </div>
 
@@ -70,6 +78,10 @@
       el: '#app',
       data() {
         return {
+          title:'',
+          gridData: [],
+          symbol: '',
+          dialogTableVisible: false,
           avg_change: 0,
           current_time: '',
           tableData: [{
@@ -88,9 +100,28 @@
             this.get_options()
         },
         methods: {
-          goToUrl(url) {
-            window.open(url, '_blank')
-        },
+          get_info_data(type){
+            axios.get(window.location.origin+'/get_comments?symbol='+this.symbol+'&type='+type)
+            .then(response => {
+                this.gridData = response.data;
+                this.$message({
+                  message: '更新成功',
+                  type: 'success'
+                });
+                // this.dialogTableVisible = true
+            });
+          },
+          go_info(row){
+              // console.log(row)
+            this.symbol = row.symbol
+            this.title = row.symbol
+            axios.get(window.location.origin+'/get_comments?symbol='+row.symbol+'&type=hot')
+            .then(response => {
+                this.gridData = response.data;
+                this.dialogTableVisible = true
+            });
+
+          },
         set_current_interval(){
             axios.get(window.location.origin+'/set_current_interval?interval='+this.value)
 
