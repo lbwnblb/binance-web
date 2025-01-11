@@ -45,6 +45,22 @@ def arr_to_float(arr):
         else:
             result.append(x)  # For other types, just append as is
     return result
+def arr_to_float_s(arrs):
+    # result = []
+    for arr in arrs:
+        for index,x in enumerate(arr):
+            if isinstance(x, str):  # Only apply replace() to strings
+                if x.replace('.', '', 1).isdigit():
+                    # result.append(float(x))
+                    arr[index] = float(x)
+
+            elif isinstance(x, (int, float)):  # Directly append numbers
+                # result.append(float(x))
+                arr[index] = x
+            else:
+                # result.append(x)  # For other types, just append as is
+                arr[index] = x
+    # return result
 def convert_to_float(d):
     for key, value in d.items():
         if isinstance(value, str) and value.replace('.', '', 1).replace('-', '', 1).isdigit():
@@ -134,6 +150,10 @@ def baidu_translate(q,type_='list'):
         trans_result = requests.get(url, params=params).json()['trans_result']
         return trans_result[0]['dst']
 
+def price_change(open_price,close_price):
+    if open_price == 0:
+        return 0
+    return round((close_price - open_price) / open_price * 100, 2)
 
 if __name__ == '__main__':
     print(baidu_translate('my\nhello\nworld\n'))

@@ -125,9 +125,16 @@ def on_open(ws):
 
 
 
-def klines(symbol,interval):
-    return utils.arr_to_float(requests.get(utils.binance_fapi + '/fapi/v1/klines', params={'symbol':symbol, 'interval':interval, 'limit':1}).json()[0])
-
+def klines(symbol,interval,limit=1):
+    response_json =  requests.get(utils.binance_fapi + '/fapi/v1/klines',
+                 params={'symbol': symbol, 'interval': interval, 'limit': limit}).json()
+    if limit == 1:
+        # return utils.arr_to_float(requests.get(utils.binance_fapi + '/fapi/v1/klines', params={'symbol':symbol, 'interval':interval, 'limit':limit}).json()[0])
+        return utils.arr_to_float(response_json[0])
+    else:
+        # for data in response_json:
+        utils.arr_to_float_s(response_json)
+        return response_json
 def retry():
     print('重试')
     binance_utils.hr24_init()
@@ -146,6 +153,31 @@ def run():
     ws.run_forever()
 
 if __name__ == '__main__':
-    run()
+    # run()
+    init()
+    # data_s = klines('BTCUSDT','1h',10)
+    # symbol_all_usdt.for
 
+    symbol_filter = []
+    for symbol in symbol_all_usdt:
+        if symbol in binance_utils.hr24_map:
+            if binance_utils.hr24_map[symbol]['quoteVolume'] > 2000:
+                symbol_filter.append(symbol)
+    klines_map = {}
+    for symbol in symbol_filter:
+        klines_map[symbol] = klines(symbol,'1h',3)
+
+    avg_map = {}
+    for key in klines_map.keys():
+        klines_data = klines_map.get(key)
+        for data in klines_data:
+            if data[0] not in avg_map:
+                avg_map[data[0]] = [data[0]]
+            avg_map[data[0]].append(utils.price_change(data[1], data[4]))
+    for key in avg_map.keys():
+        print(utils.convert_timestamp_to_date(key),round(sum(avg_map[key])/len(avg_map[key]),2))
+    # exit()
+
+
+    # print(data_s)
 

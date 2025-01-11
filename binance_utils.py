@@ -15,5 +15,10 @@ def hr24_init():
 
     # return datas
 
+
+
+
+
+
 if __name__ == '__main__':
     pass
