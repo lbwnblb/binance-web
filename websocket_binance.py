@@ -100,7 +100,15 @@ def on_message(ws, message):
             # current_interval = utils.current_interval()
             # print(end='\n\n\n')
 
-
+# def on_message(ws, message):
+#     global current_interval
+#     message = json.loads(message)
+#     utils.convert_to_float(message)
+#     E = message['E']
+#     symbol = message['s']
+#     price = message['p']
+#     if price != 0:
+#         pass
 
 def on_error(ws, error):
     print(error)
@@ -119,7 +127,7 @@ def on_open(ws):
     # after = subscribe['params'][-199:]
     # subscribe['params'] = subscribe['params'][:10]
 
-
+    # subscribe['params'].append(f'{symbol.lower()}@aggTrade')
     ws.send(json.dumps(subscribe))
     print("### open ###")
 
@@ -181,18 +189,18 @@ if __name__ == '__main__':
         if last:
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
             k = 0
-            if last['side'] in 'BUY':
+            if last['side'] in 'BUY' and item['open']+k > item['low']:
                 flag = False #(utils.price_change(item['open'],item['low']) < -1)
                 print('收益:','-1' if flag else item['change'])
                 total_income += (-1 if flag else item['change'])
                 total_income-=0.1
                 # pass
             else:
-                # if item['open']+k < item['high']:
-                flag = False #(utils.price_change(item['open'], item['high']) > 1)
-                print('收益:','-1' if flag else -item['change'])
-                total_income -= (1 if flag else item['change'])
-                total_income -= 0.1
+                if item['open']+k < item['high']:
+                    flag = False #(utils.price_change(item['open'], item['high']) > 1)
+                    print('收益:','-1' if flag else -item['change'])
+                    total_income -= (1 if flag else item['change'])
+                    total_income -= 0.1
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
