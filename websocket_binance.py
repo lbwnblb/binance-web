@@ -176,7 +176,7 @@ if __name__ == '__main__':
     klines_map_h = {}
     for symbol in symbol_filter:
         klines_map[symbol] = klines(symbol,'15m',limit=limit)
-        klines_map_h[symbol] = klines(symbol,'8h',limit=limit)
+        # klines_map_h[symbol] = klines(symbol,'8h',limit=limit)
     print('limit:',limit)
     avg_map = {}
     for key in klines_map.keys():
@@ -185,15 +185,19 @@ if __name__ == '__main__':
             if data[0] not in avg_map:
                 avg_map[data[0]] = []
             avg_map[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2],'close':data[4],'open':data[1]})
-    avg_map_h = {}
-    for key in klines_map_h.keys():
-        klines_data = klines_map_h.get(key)
-        for data in klines_data:
-            if data[0] not in avg_map_h:
-                avg_map_h[data[0]] = []
-            avg_map_h[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2],'close':data[4],'open':data[1]})
+    # avg_map_h = {}
+    # for key in klines_map_h.keys():
+    #     klines_data = klines_map_h.get(key)
+    #     for data in klines_data:
+    #         if data[0] not in avg_map_h:
+    #             avg_map_h[data[0]] = []
+    #         avg_map_h[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2],'close':data[4],'open':data[1]})
     last = None
     total_income = 0
+    # for key in avg_map_h.keys():
+    #     sum_number_h = sum([item['change'] for item in avg_map_h[key]])
+    #     sum_change_h = round(sum_number_h / len(avg_map_h[key]), 2)
+
     for key in avg_map.keys():
         if last:
             item = [item for item in avg_map[key] if item['symbol'] == last['symbol']][0]
@@ -213,14 +217,13 @@ if __name__ == '__main__':
 
         sum_number = sum([item['change'] for item in avg_map[key]])
         sum_change = round(sum_number / len(avg_map[key]), 2)
-        sum_number_h = sum([item['change'] for item in avg_map_h[key]])
-        sum_change_h = round(sum_number / len(avg_map_h[key]), 2)
+
         length = len(avg_map[key])
         # print(key,avg_map[key])
         print(utils.convert_timestamp_to_date(key),sum_change,end='')
         # print(key, sum_change,end='')
-        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=(False if sum_change_h > 0 else True))[0]['symbol']
-        last = {'symbol': symbol, 'side': 'BUY' if sum_change_h > 0 else 'SELL'}
+        symbol = sorted(avg_map[key], key=lambda x: x['change'], reverse=(False if sum_change > 0 else True))[0]['symbol']
+        last = {'symbol': symbol, 'side': 'BUY' if sum_change > 0 else 'SELL'}
 
 
         print('选择:', last)
