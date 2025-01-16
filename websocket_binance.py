@@ -172,7 +172,7 @@ if __name__ == '__main__':
             if binance_utils.hr24_map[symbol]['quoteVolume'] > 20000:
                 symbol_filter.append(symbol)
     klines_map = {}
-    limit = 1500
+    limit = 100
     klines_map_h = {}
     for symbol in symbol_filter:
         klines_map[symbol] = klines(symbol,'15m',limit=limit)
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         klines_data = klines_map_h.get(key)
         for data in klines_data:
             if data[0] not in avg_map_h:
-                avg_map[data[0]] = []
+                avg_map_h[data[0]] = []
             avg_map_h[data[0]].append({'change':utils.price_change(data[1], data[4]),'symbol':key,'low':data[3],'high':data[2],'close':data[4],'open':data[1]})
     last = None
     total_income = 0
